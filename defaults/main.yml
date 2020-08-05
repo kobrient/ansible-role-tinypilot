@@ -2,7 +2,7 @@
 tinypilot_group: tinypilot
 tinypilot_user: tinypilot
 tinypilot_dir: /opt/tinypilot
-tinypilot_repo: https://github.com/mtlynch/tinypilot.git
+tinypilot_repo: https://github.com/kobrient/tinypilot.git
 tinypilot_repo_branch: master
 tinypilot_interface: '127.0.0.1'
 tinypilot_port: 8000
