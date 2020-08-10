@@ -50,7 +50,8 @@
 
 - name: install custom KylePilot GPIO scripts
   shell: sudo cp system_scripts/power_hit.py system_scripts/power_hold.py system_scripts/reset_hit.py /usr/bin
-  chdir: "{{ tinypilot_dir }}"
+  args:
+    chdir: "{{ tinypilot_dir }}"
 
 - name: create TinyPilot virtualenv
   pip:
