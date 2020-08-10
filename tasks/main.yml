@@ -50,7 +50,7 @@
 
 - name: install reset GPIO script
   copy:
-    src: "{{ tinypilot_repo }}/system_scripts/reset_hit.py"
+    src: "{{ tinypilot_dir }}/system_scripts/reset_hit.py"
     dest: /usr/bin/reset_hit.py
     owner: root
     group: root
@@ -58,7 +58,7 @@
 
 - name: install power GPIO script
   copy:
-    src: "{{ tinypilot_repo }}/system_scripts/power_hit.py"
+    src: "{{ tinypilot_dir }}/system_scripts/power_hit.py"
     dest: /usr/bin/power_hit.py
     owner: root
     group: root
@@ -66,7 +66,7 @@
 
 - name: install power hold GPIO script
   copy:
-    src: "{{ tinypilot_repo }}/system_scripts/power_hold.py"
+    src: "{{ tinypilot_dir }}/system_scripts/power_hold.py"
     dest: /usr/bin/power_hold.py
     owner: root
     group: root
