@@ -23,7 +23,7 @@
 - name: create tinypilot user
   user:
     name: "{{ tinypilot_user }}"
-    group: "{{ tinypilot_group }}"
+    groups: "{{ tinypilot_group }},gpio"
     system: yes
 
 - name: enable passwordless sudo for shutdown command
