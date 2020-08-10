@@ -12,6 +12,7 @@
       - git
       - python-pip
       - python3-venv
+      - python3-gpiozero
       - sudo
 
 - name: create tinypilot group
@@ -46,6 +47,10 @@
     accept_hostkey: yes
   notify:
     - restart TinyPilot service
+
+- name: install custom KylePilot GPIO scripts
+  shell: sudo cp system_scripts/power_hit.py system_scripts/power_hold.py system_scripts/reset_hit.py /usr/bin
+  chdir: "{{ tinypilot_dir }}"
 
 - name: create TinyPilot virtualenv
   pip:
