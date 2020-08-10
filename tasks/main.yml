@@ -48,10 +48,29 @@
   notify:
     - restart TinyPilot service
 
-- name: install custom KylePilot GPIO scripts
-  shell: sudo cp system_scripts/power_hit.py system_scripts/power_hold.py system_scripts/reset_hit.py /usr/bin
-  args:
-    chdir: "{{ tinypilot_dir }}"
+- name: install reset GPIO script
+  copy:
+    src: "{{ tinypilot_repo }}/system_scripts/reset_hit.py"
+    dest: /usr/bin/reset_hit.py
+    owner: root
+    group: root
+    mode: '0655'
+
+- name: install power GPIO script
+  copy:
+    src: "{{ tinypilot_repo }}/system_scripts/power_hit.py"
+    dest: /usr/bin/power_hit.py
+    owner: root
+    group: root
+    mode: '0655'
+
+- name: install power hold GPIO script
+  copy:
+    src: "{{ tinypilot_repo }}/system_scripts/power_hold.py"
+    dest: /usr/bin/power_hold.py
+    owner: root
+    group: root
+    mode: '0655'
 
 - name: create TinyPilot virtualenv
   pip:
