@@ -1,7 +1,7 @@
 ---
 - name: install HID USB gadget
   import_tasks: install_usb_gadget.yml
-  when: ansible_architecture.startswith("armv") or ansible_architecture == "aarch64"
+  when: tinypilot_provision_usb_gadget
 
 - name: install TinyPilot pre-requisite packages
   apt:
@@ -12,6 +12,7 @@
       - git
       - python-pip
       - python3-venv
+      - python3-gpiozero
       - sudo
 
 - name: create tinypilot group
@@ -22,8 +23,9 @@
 - name: create tinypilot user
   user:
     name: "{{ tinypilot_user }}"
-    group: "{{ tinypilot_group }}"
+    groups: "{{ tinypilot_group }},gpio"
     system: yes
+    create_home: no
 
 - name: enable passwordless sudo for shutdown command
   lineinfile:
@@ -47,10 +49,43 @@
   notify:
     - restart TinyPilot service
 
+- name: install reset GPIO script
+  copy:
+    src: "{{ tinypilot_dir }}/system_scripts/reset_hit.py"
+    dest: /usr/bin/reset_hit.py
+    owner: root
+    group: root
+    mode: '0655'
+
+- name: install power GPIO script
+  copy:
+    src: "{{ tinypilot_dir }}/system_scripts/power_hit.py"
+    dest: /usr/bin/power_hit.py
+    owner: root
+    group: root
+    mode: '0655'
+
+- name: install power hold GPIO script
+  copy:
+    src: "{{ tinypilot_dir }}/system_scripts/power_hold.py"
+    dest: /usr/bin/power_hold.py
+    owner: root
+    group: root
+    mode: '0655'
+
+- name: find absolute path to python3
+  shell: realpath $(which python3)
+  register: realpath_python3
+  changed_when: false
+
+- name: save absolute path to python3
+  set_fact:
+    python3_abs_path: "{{ realpath_python3.stdout }}"
+
 - name: create TinyPilot virtualenv
   pip:
     virtualenv: "{{ tinypilot_dir }}/venv"
-    virtualenv_command: python3 -m venv venv
+    virtualenv_command: "{{ python3_abs_path }} -m venv venv"
     requirements: "{{ tinypilot_dir }}/requirements.txt"
   notify:
     - restart TinyPilot service
